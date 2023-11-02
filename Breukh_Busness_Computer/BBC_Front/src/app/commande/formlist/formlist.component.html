@@ -1,0 +1,138 @@
+<form action="" [formGroup]="formeFormulaire">
+
+<div class="mt-2 ml-2 bg-white-500 shadow-lg shadow-blue-500/50 bg-white border-[#000] border rounded-[1%] border-solid border-[3%]" style="height: 870px;">
+
+    <div class="mt-4 ml-2 ">
+        <div class="text-[#723B13]">
+            <div class="font-bold h-10 text-red flex justify-center items-center">
+                <h1>BREUKH BUSNESS COMPUTER</h1>
+            </div>
+            <div class=" flex  items-center justify-center flex-col">
+                <h1>{{succursale.succursales[0].nom.toUpperCase()}}</h1>
+                <h2>adresse :{{succursale.succursales[0].adresse}}</h2>
+                <div>telephone :{{succursale.succursales[0].telephone}}</div>
+            </div>
+            <div  class="flex justify-end mr-[90px]">
+                <h1>quantite de Stock :</h1>
+            </div>
+            <div class="bg-green-400" *ngIf="message">
+                <div class="flex justify-center text-center">
+                    <h2>{{message}}</h2>
+                </div>
+            </div>
+            <div class=" bg-[#ffff] shadow-lg shadow-blue-500/50  overflow-x-auto max-h-[580px] mt-2 mr-2 shadow-md sm:rounded-lg">
+              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr class="">
+                          <th scope="col" class="px-5 py-3 rounded-l-lg">
+                              Produit
+                          </th>
+                          <th scope="col" class="px-5 py-3">
+                              Quatite
+                          </th>
+                          <th scope="col" class="px-6 py-3 rounded-r-lg">
+                              Prix
+                          </th>
+                          <th scope="col" class="px-6 py-3 rounded-r-lg">
+                              total 
+                          </th>
+                          <th scope="col" class="px-6 py-3 rounded-r-lg">
+                              action
+                          </th>
+                          <th scope="col" class="px-3 py-2 rounded-r-lg">Remove</th>
+                      </tr>
+                  </thead>
+                  <tbody class="" formArrayName="commandes" *ngFor="let item of commandes.controls; let i=index;">           
+                      <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600" [formGroupName]="i">
+                          <td class="px-4 py-3">{{item.value.libelle}}</td>
+                          <td class="px-4 py-4" >
+                              <input (input)="onChangeQuantite($event,i)"  type="number"  class="p-2 py-0.5 " value="{{item.value.quantite}}">
+                              <!-- <div *ngIf="commandes.get('quantite')?.hasError('error')" class="text-red-600">
+                                {{commandes.get('quantite')?.getError('error')}}
+                              </div> -->
+                          </td>
+                          <td class="px-4 py-4" >
+                            {{item.value.prix}}
+                          </td>
+                          <td class="px-4 py-4" >
+                              {{item.value.total}}
+                          </td>
+                          <td class="px-4 py-4">
+                              <button  class="border rounded-md p-2 bg-blue-500 hover:bg-blue-700 text-white">Editer</button>
+                          </td>
+                          <td class="px-4 py-4" >
+                            <button class="bg-red-700 hover:bg-red-800 rounded-md p-3" (click)="removeItem(i,item)" >X</button>
+                            </td>
+                      </tr>  
+                  </tbody>
+              </table>
+          </div>
+          <hr class= "" />
+          <div class="  border-black flex items-center space-x-15">
+            <div>
+                <input type="button" class="bg-red-500  text-white p-3 px-4 "  value="Réduction(%)">
+                <input type="number" min="1" max="100"  (input)="reductionCommande($event)" formControlName="reduction" class="text-red border border-gray-300 rounded py-2 px-4" placeholder="0"> 
+            </div>
+            <div class=" ml-[10%]">
+                <input type="button" class="bg-green-500  text-white p-3 px-4 "  value="MONTANT">
+                <input formControlName="montant" type="number" class="border border-gray-300 rounded p-2 w-[65%]" placeholder="valeu montant">
+            </div>
+            <div class="ml-[15%]">
+                <button (click)="TerminerCommande()"  data-modal-target="top-left-modal" data-modal-toggle="top-left-modal" class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">SUIVANT</button>
+            </div>
+            
+            <!-- <div class="mb-9">La remise en %</div> -->
+          </div> 
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="top-left-modal" data-modal-placement="top-left" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative w-full max-w-2xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                  <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                      Terminer la Vente
+                  </h3>
+                  <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="top-left-modal">
+                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                  </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-6 space-y-6">
+                  <div  class="">
+                   <div class="flex flex-row text-green-700 space-x-2 justify-center">
+                    <div class="">net à Payer</div>
+                    <div class="font-bold ">{{montantApayer||0}}</div>
+                    <div class="p-1">FCFA</div>
+                   </div>
+                      <div class="relative mt-3">
+                          <input id="floating_outlined" aria-describedby="floating_outlined_help"  formControlName="aPayer" type="number"  class="  block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+                          [ngClass]="{'floating_outlined_error  dark:border-red-500 border-red-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600':formeFormulaire.get('aPayer')?.invalid &&(formeFormulaire.get('aPayer')?.touched || formeFormulaire.get('aPayer')?.dirty),
+                          'floating_outlined_success  dark:border-green-500 border-green-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600':formeFormulaire.get('aPayer')?.valid &&(formeFormulaire.get('aPayer')?.touched || formeFormulaire.get('aPayer')?.dirty)}"
+                          />
+                          <label for="floating_outlined" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Montant encaissé</label>
+                         <div class="text-red-600 flex justify-center space-x-2">
+                            <div>Rendu</div>
+                            <div>{{formeFormulaire.get('aPayer')?.getError('error') ||0}}</div>
+                            <div>FCFA</div>
+                         </div>
+                      </div> 
+                  </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <button (click)="TerminerVente()" [disabled]="formeFormulaire.get('aPayer')?.getError('error') < 0" data-modal-hide="top-left-modal" type="button" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Terminer</button>
+                  <button data-modal-hide="top-left-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-white-900 focus:z-10 dark:bg-red-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-600">Annuler</button>
+                  <button (click)="faireFacture()"  data-modal-hide="top-left-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Facture</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</form>
+

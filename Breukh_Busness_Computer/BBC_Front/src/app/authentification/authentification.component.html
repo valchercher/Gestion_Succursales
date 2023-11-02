@@ -1,0 +1,33 @@
+<!-- <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin custom-spin" *ngIf="loading"></div> -->
+
+  
+<!-- <div *ngIf="!loading"> -->
+<form [formGroup]="loginForm" (ngSubmit)="seConnecter()">
+<div class=" flex items-center justify-center">
+    <div class="mt-[10%] flex items-center flex-col space-y-4 bg-slate-100 shadow-md p-[7%]">
+        <h1>S'identifier</h1>
+        <p class="text-red-600">{{message}}</p>
+            <div>
+                <p [ngClass]="{ 'has-error': isSubmit && formControls['email'].errors }">
+                    <input class="px-7  py-5  rounded-3xl" type="email" formControlName="email"   placeholder="email@gmail.com">
+                </p>
+                <div *ngIf="isSubmit && formControls['email'].errors" class="help-block">
+                    <div *ngIf="formControls['email'].hasError('required')"><font class="text-red-600">L'email  doit être requis</font></div>
+                  </div>
+            </div>
+            <div>
+                <p [ngClass]="{ 'has-error': isSubmit && formControls['password'].errors }">
+                    <input  class="px-7 py-5 rounded-3xl" type="password" formControlName="password"  placeholder="password">
+                </p>
+                <div *ngIf="isSubmit && formControls['password'].errors" class="help-block">
+                    <div *ngIf="formControls['password'].hasError('required')"><font class="text-red-600">Mot de passe doit être requis</font></div>
+                  </div>
+            </div>
+            <div>
+                <button type="submit" class=" bg-blue-500 text-white hover:bg-blue-800  rounded-xl p-4">Se connecter</button>
+            </div>
+            
+        </div>
+    </div>
+</form>
+<!-- </div> -->

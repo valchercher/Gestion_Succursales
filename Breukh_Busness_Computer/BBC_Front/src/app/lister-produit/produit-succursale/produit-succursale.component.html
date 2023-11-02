@@ -1,0 +1,121 @@
+<app-navbar></app-navbar>
+<form action="" [formGroup]="produitSuccursale">
+  <div class=" mt-[5%] ml-24 mr-28 shadow-2xl " >
+    <div class=" flex items-center justify-evenly space-x-1 mt-[8%]">
+        <div class="space-x-3 flex flex-row">
+           <div class="mt-3">
+            <p>Recherche par:</p>
+           </div>
+           <div>
+            <select id="countries" (change)="selectedOption($event)" class="bg-gray-50 px-[200px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected >Choisir </option>
+                <option value="libelle">libelle</option>
+                <option value="code">code</option>
+                <option value="marque.libelle">marque</option>
+                <option value=""></option>
+                </select>
+           </div>
+        </div>
+        <div class="space-x-3">
+            <input type="search" formControlName="search" name="" class="rounded-md" id="" placeholder="rechercher....">
+        
+            <button (click)="rechercher()" class="bg-blue-600 rounded p-3 text-white hover:bg-blue-800" type="submit">Rechercher</button>
+        </div>
+        <div class=" flex space-x-4">
+            <div>
+                <button class="p-3 rounded border border-black bg-slate-100 hover:bg-slate-300" type="submit">Imprimer</button>
+            </div>
+            <div>
+                <button class="p-3 bg-blue-950 rounded text-white" type="submit">Editer</button>
+            </div>
+        </div>
+    </div>
+    <div class=" ml-7 flex space-x-[60%]">
+        <div class="space-x-3 mt-[5%]">
+            <label for="">show : </label>
+            <input type="number" class="rounded-md " name="" id="">
+            <label for="">entries</label>
+        </div>
+        <div class="mt-[2%]">
+            <button class="ml-[21%] mb-2 rounded bg-red-500 hover:bg-red-700 text-white p-3" type="submit">Le Stock</button>
+           <div>
+            <label for="search">search:</label>
+            <input class=" rounded-md mr-[1%]" type="search" name="" id="">
+           </div>
+        </div>
+    </div>
+    <div class=" mt-[1%]  ml-[2%] mr-[3%] ">
+        <table class="table border w-full text-sm text-left dark:text-gray-400">
+            <thead class=" text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">Photo</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">Code</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">Produit</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">Marque</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">prix</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">quantite</th>
+                    <th scope="col" class="px-5 py-3 rounded-l-lg">
+                        <button  routerLink="/produit/ajouter"  class="bg-green-400 rounded-md hover:bg-green-600  text-white p-3" type="submit">Ajouter</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let produit of listerProduit|filtre:code:libelle">
+                <tr class="border shadow-md">
+                    <td class="px-5 py-3"><img src="{{produit.photo}}" class="rounded w-[70px]" alt=""></td>
+                    <td class="px-5 py-3">{{produit.code}}</td>
+                    <td class="px-5 py-3">{{produit.libelle}}</td>
+                    <td class="px-5 py-3">{{produit.marque.libelle}}</td>
+                    <td class="px-5 py-3">{{produit.succursales[0].prix}}</td>
+                    <td class="px-5 py-3">{{produit.succursales[0].quantiteStock}}</td>
+                    <td class=" space-x-2">
+                        <button class="rounded-md bg-blue-500 p-2"  type="submit">Details</button>
+                        <button class="rounded-md bg-yellow-400 p-2" type="submit">Editer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+
+    <!-- pagination -->
+  <mat-paginator 
+    [length]="total"
+    [pageIndex]="page-1"
+    [pageSize]="page_size"
+    [pageSizeOptions]="[3,5, 10, 25, 100]"
+    (page)="onChangePage($event)">
+  </mat-paginator>
+    
+
+  <!-- <div class="mt-9 flex justify-end">
+    <nav aria-label="Page navigation example">
+        <ul class="inline-flex -space-x-px text-base h-10">
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+          </li>
+          <li>
+            <a href="#" aria-current="page" class="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+          </li>
+        </ul>
+      </nav>
+  </div> -->
+  <div class="h-7"></div>
+</div>
+</form>
+<router-outlet></router-outlet>

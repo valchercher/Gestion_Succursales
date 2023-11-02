@@ -1,0 +1,111 @@
+<app-navbar></app-navbar>
+<form action=""[formGroup]="formAddProd" (ngSubmit)="onSubmit()" >
+    <div class=" ml-[10%] mr-[10%] bg-slate-50 shadow-lg h-[100%]" >
+       <div class="">
+        <div class="flex justify-center">
+            <h1 class="underline">Nouveau Produit</h1>
+        </div>
+        <div *ngIf="message" class="flex justify-center text-center items-center bg-green-400 ">
+            <div>
+                <h2>{{message}}</h2>
+            </div>
+        </div>
+        <div class=" flex ml-[20%] mt-24 justify-around">
+            <h2 for="" class="underline">Article</h2>
+            <h2 for="" class="underline">Prix d'achat</h2>
+            <h2 for="" class="underline">Quantite en stock</h2>
+        </div>
+        <div class=" flex justify-around">
+            <input  formControlName="libelle" (input)="verifyArticleExiste($event)" class="rounded-md px-[12%] py-3" type="text">
+            <input formControlName="prix" type="number" class="rounded-md px-[3%] py-3" name="" id="">
+            <input formControlName="quantite" type="number" class="rounded-md px-9 py-3" name="" id="">
+        </div>
+        <div *ngIf="erreur" class="text-red-600 flex  ml-10">{{erreur}} existe dèja</div>
+        <div class=" flex  justify-around">
+            <label for="" class="underline mt-9 font-bold">Marque</label>
+            <label for="" class="underline mt-9 font-bold">Categorie</label>
+        </div>
+        <div class="flex justify-around mt-7 text-center">    
+            <select formControlName="marque" name="" id="" class="rounded-md px-[32%] py-3 ">
+                <option *ngFor="let marque of marques" [ngValue]="marque">{{marque.libelle}}</option>
+            </select>
+            <select formControlName="categorie" name="" id="" class="rounded-md px-[32%] py-3">
+                <option *ngFor="let categorie of categories" [ngValue]="categorie">{{categorie.libelle}}</option>
+            </select>
+        </div>
+        
+       <div class="flex   mt-6">
+            <div class="ml-24">
+                <label for="" class="underline font-bold">Description</label>
+                <div class="mt-3">
+                    <textarea class="" formControlName="description"></textarea>
+                </div>
+            </div>
+            <div class="flex flex-col ml-[20%] justify-center shadow-3xl shadow-slate-100 p-7 border rounded bg-gray-400">
+                <h1 class="text-red-500">Code produit</h1>
+                <div class="flex justify-center items-center text-center">
+                    <input formControlName="code" [readOnly]="true" class="flex justify-center items-center text-center" type="text" placeholder="0000000"/>
+                </div>
+            </div>
+       </div>
+       <div class="flex mt-[-3%] justify-around">
+           <div>
+               <div class="ml-7">
+                <button type="button" (click)="addItem()" [disabled]="caracteristiques.length==0" class="text-blue-600 hover:bg-slate-50 hover:text-black rounded-md p-4 shadow-lg bg-slate-400 border font-bold border-black" >Ajouter Caracteristique</button>
+            </div>
+            <hr class="mt-3 border-black">
+            <div class="overflow-auto  max-h-[400px]">
+                <table>
+                    <thead   ></thead>
+                    <tbody  formArrayName="produit" *ngFor="let item of produits.controls;let i=index" class="space-y-1 ">
+                        <tr [formGroupName]="i" class="mb-14">
+                            <td class="px-7"> 
+                                <select   formControlName="libelle" (change)="onChangeSelect($event,i)" class=" py-3 appearance-none bg-white border border-gray-300 hover:border-gray-500 px-4  pr-8 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    <option *ngFor="let carat of caracterists" [ngValue]="carat">{{carat.libelle}}</option>
+                                  </select>                                  
+                            </td>
+                            <td class="px-7">
+                                <div *ngIf="DisqueItem[i]" class="flex flex-row space-x-2">
+                                    <select type="select"   formControlName="valeur" class="rounded-md"  >
+                                        <option [ngValue]="valeur" *ngFor="let valeur of valeurs[i]">{{valeur}}</option>
+                                    </select>
+                                    <select type="select" *ngIf="unites[i].length>0" formControlName="uniter" class="rounded-md"  >
+                                        <option [ngValue]="uniter" *ngFor="let uniter of unites[i]">{{uniter}}</option>
+                                    </select>      
+                                </div>
+                                <div *ngIf="BaterieItem[i]" class="space-x-2">
+                                    <input type="text" formControlName="valeur" class="rounded-md">
+                                    <select type="select"  formControlName="uniter" class="rounded-md"  >
+                                        <option [ngValue]="uniter" *ngFor="let uniter of unites[i]">{{uniter}}</option>
+                                    </select> 
+                                </div>
+                                <div  *ngIf="RadioItem[i]" class="space-x-2 flex flex-row">
+                                   <div class="space-x-3" *ngFor="let text of textContent[i]">
+                                    <label for="{{text}}"  name="status">{{text}}</label>
+                                    <input type="radio"   name="status" [value]="text"  id="{{text}}" checked/>
+                                   </div>
+                                </div>
+                            </td>
+                            <td class="text-red-600 p-7"><button (click)="revoteItem(i)" class="rounded-md p-2 shadow-2xl border border-black px-3 py-3" type="submit">X</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="ml-[10%]">
+            <label for="image" >
+                <img [src]="photos?.value" class="w-32 h-32 object-cover border-2 border-gray-300" alt="">
+                <input type="file"  (change)="onChangeImage($event)" formControlName="photo"  class="hidden"  id="image">
+            </label>
+            <div class="space-x-4 text-white h-[9%] mt-4">
+                <button type="submit" [disabled]="formAddProd.invalid"  class= "shadow-blue-600 bg-green-500 rounded-md  p-4">Enregistrer</button>
+                <button  class="bg-red-500 rounded-md  p-4">Annuler</button>
+            </div>
+        </div>
+       </div>
+       </div>
+       <div class="h-7"></div>
+    </div>
+    <!-- pagination -->
+    
+</form>

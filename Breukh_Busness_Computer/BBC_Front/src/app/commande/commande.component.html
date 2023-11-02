@@ -1,0 +1,19 @@
+
+    <app-navbar></app-navbar>
+<div class="mt-5">
+    <div class="flex bg-[#FDFDEA] mt-5 w-[100%]">
+     <app-formlist class="w-2/3"
+        (VenteCommmande)="Vente($event)"
+        (faireCommande)="faireCommande($event)"
+     ></app-formlist>   
+        <app-produit class="w-1/3"                  
+         [Response]="Response"
+         [resultCode]="Resultat"
+         (referenceCode)="resultSearch($event)"
+        (commandeVente)="commandeVente($event)"
+        
+        ></app-produit>
+        <app-facture  [hidden]="hidden"/>
+    </div>
+</div>
+<!-- </div> -->

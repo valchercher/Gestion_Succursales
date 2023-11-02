@@ -1,0 +1,47 @@
+<form action="" [formGroup]="facture">
+
+<!-- <button (click)="generatePdf()" class="rounded-md bg-blue-600 p-3">GenererPDF</button> -->
+<div class="shadow-md ">
+    <div>
+        <img src="./assets/image/BBC_logo.png" alt="" srcset="">
+    </div>
+    <div class="flex justify-center text-center ">
+        <h1><strong>Facture :</strong></h1>
+    </div>
+    <div>
+        <div class="flex justify-around">
+            <h1><strong>De:</strong></h1>
+            <h1><strong>Tel:</strong></h1>
+        </div>
+        <div class="flex justify-around">
+            <h1><strong>A:</strong></h1>
+            <h1><strong>Tel:</strong></h1>
+        </div>
+    </div>
+    <div class="flex justify-between ">
+       <div class="flex justify-center w-full ml-[15%] mr-[15%]">
+        <table class=" table border w-full text-sm text-left dark:text-gray-400 ">
+            <thead class=" text-xs text-gray-700 uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+               <tr>
+                    <th scope="col" class="px-3 py-4 rounded-l-lg">Produit</th>
+                    <th scope="col" class="px-3 py-4 rounded-l-lg">quantite</th>
+                    <th scope="col" class="px-3 py-4 rounded-l-lg">prix</th>
+                    <th scope="col" class="px-3 py-4 rounded-l-lg">total</th>
+               </tr>
+            </thead>
+            <tbody formArrayName="donneeCommande" *ngFor="let item of donneeCommandes.controls; let i=index">
+                <tr >
+                    <td class="px-3 py-4">{{item.value?.libelle}}</td>
+                    <td class="px-3 py-4">{{item?.value.quantite}}</td>
+                    <td class="px-3 py-4">{{item.value?.prix}}FCFA</td>
+                    <td class="px-3 py-4">{{item?.value.total}} FCFA</td>
+                </tr>
+            </tbody>
+        </table>
+       </div>
+    </div>
+    <div class="flex justify-end mr-[20%] mt-5">
+     <h1><strong>Total:</strong>{{montant}} FCFA</h1>
+    </div>
+</div>
+</form>
